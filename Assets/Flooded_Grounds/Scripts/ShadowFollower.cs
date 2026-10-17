@@ -45,6 +45,33 @@ public class ShadowFollower : MonoBehaviour {
 
 		// If watched, freeze or retreat slowly into shadows; otherwise stalk forward
 		float currentSpeed = beingWatched ? (moveSpeed * 0.2f) : moveSpeed;
+
+		// Thematic interaction: Fire repels Shadow
+		FireSanctuary protectingFire;
+		bool playerInFire = FireSanctuary.IsPositionProtected(targetPlayer.position, out protectingFire);
+		bool shadowInFire = FireSanctuary.IsPositionProtected(transform.position, out _);
+
+		if (playerInFire && protectingFire != null) {
+			// Player is safe inside fire sanctuary; shadow lingers outside the fire rim
+			Vector3 fireToShadow = (transform.position - protectingFire.transform.position);
+			fireToShadow.y = 0f;
+			if (fireToShadow.sqrMagnitude < 0.01f) fireToShadow = -targetPlayer.forward;
+			fireToShadow.Normalize();
+			targetPos = protectingFire.transform.position + fireToShadow * (protectingFire.protectionRadius + 2.5f);
+			targetPos.y = Mathf.Max(groundY + hoverHeight, targetPlayer.position.y);
+			currentSpeed = moveSpeed * 0.6f;
+		} else if (shadowInFire) {
+			// Shadow accidentally touched fire light; recoil back into the shadows
+			var nearestFire = FireSanctuary.GetClosestFire(transform.position);
+			if (nearestFire != null) {
+				Vector3 repelDir = (transform.position - nearestFire.transform.position);
+				repelDir.y = 0f;
+				repelDir.Normalize();
+				targetPos = nearestFire.transform.position + repelDir * (nearestFire.protectionRadius + 3.5f);
+				targetPos.y = Mathf.Max(groundY + hoverHeight, targetPlayer.position.y);
+			}
+		}
+
 		transform.position = Vector3.Lerp(transform.position, targetPos, Time.deltaTime * currentSpeed);
 
 		// Face the player
