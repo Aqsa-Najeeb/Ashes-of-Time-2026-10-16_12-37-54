@@ -1,4 +1,4 @@
-﻿using UnityEngine;
+using UnityEngine;
 using System.Collections;
 
 public class ExtendedFlycam : MonoBehaviour
@@ -32,7 +32,8 @@ public class ExtendedFlycam : MonoBehaviour
 
 	void Start ()
 	{
-		Screen.lockCursor = true;
+		Cursor.lockState = CursorLockMode.Locked;
+		Cursor.visible = false;
 	}
 
 	void Update ()
@@ -66,7 +67,9 @@ public class ExtendedFlycam : MonoBehaviour
 
 		if (Input.GetKeyDown (KeyCode.End))
 		{
-			Screen.lockCursor = (Screen.lockCursor == false) ? true : false;
+			bool isLocked = Cursor.lockState == CursorLockMode.Locked;
+			Cursor.lockState = isLocked ? CursorLockMode.None : CursorLockMode.Locked;
+			Cursor.visible = isLocked;
 		}
 	}
 }

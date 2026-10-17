@@ -10,7 +10,7 @@ Shader "SH_Vefects_VFX_URP_Particles_Erosion_01"
 		_Noise_02_Texture("Noise_02_Texture", 2D) = "white" {}
 		_MaskTexture("Mask Texture", 2D) = "white" {}
 		_MaskMoveTexture("Mask Move Texture", 2D) = "white" {}
-		_Color("Color", Color) = (1,1,1,0)
+		_Color("Color", Color) = (1, 0.35, 0.03, 1)
 		_NoiseDistortionTexture("Noise Distortion Texture", 2D) = "white" {}
 		_Noise01Scale("Noise 01 Scale", Vector) = (0.8,0.8,0,0)
 		_Noise02Scale("Noise 02 Scale", Vector) = (1,1,0,0)

@@ -13,8 +13,8 @@ Shader "SH_Vefects_VFX_URP_Fire_Flames_01"
 		_DistortionMaskTexture("Distortion Mask Texture", 2D) = "white" {}
 		_Mask_Texture("Mask_Texture", 2D) = "white" {}
 		_TextureSample2("Texture Sample 2", 2D) = "white" {}
-		_ColorBottom("Color Bottom", Color) = (1,0.3666667,0,0)
-		_ColorTop("Color Top", Color) = (1,0.6666667,0,0)
+		_ColorBottom("Color Bottom", Color) = (1, 0.22, 0, 1)
+		_ColorTop("Color Top", Color) = (1, 0.45, 0.02, 1)
 		_NoiseDistortion_Texture("NoiseDistortion_Texture", 2D) = "white" {}
 		_Noise_01_Scale("Noise_01_Scale", Vector) = (0.8,0.8,0,0)
 		_Noise_02_Scale("Noise_02_Scale", Vector) = (1,1,0,0)
