@@ -18,6 +18,8 @@ public class CharController_Motor : MonoBehaviour {
 	public GameObject cam;
 	public bool lockCursorOnStart = true;
 
+	private CharacterController character;
+	private PlayerGrabController grabController;
     [Header("Flashlight Settings")]
     public Light flashlight;
     public float flashlightRange = 15f;
@@ -29,6 +31,13 @@ public class CharController_Motor : MonoBehaviour {
 
 	void Start() {
 		character = GetComponent<CharacterController>();
+		grabController = GetComponent<PlayerGrabController>();
+		if (grabController == null) {
+			grabController = gameObject.AddComponent<PlayerGrabController>();
+		}
+		if (GetComponent<GrabbableHUD>() == null) {
+			gameObject.AddComponent<GrabbableHUD>();
+		}
 		if (cam == null) {
 			Camera c = GetComponentInChildren<Camera>();
 			if (c != null) cam = c.gameObject;
@@ -190,6 +199,7 @@ public class CharController_Motor : MonoBehaviour {
 
 	void HandleLook() {
 		if (Cursor.lockState != CursorLockMode.Locked) return;
+		if (grabController != null && grabController.IsRotatingHeldObject) return;
 		float mouseX = 0f;
 		float mouseY = 0f;
 		#if ENABLE_INPUT_SYSTEM
