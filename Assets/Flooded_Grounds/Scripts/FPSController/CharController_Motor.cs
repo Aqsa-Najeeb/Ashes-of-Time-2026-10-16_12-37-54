@@ -14,11 +14,16 @@ public class CharController_Motor : MonoBehaviour {
 	public float WaterHeight = 15.5f;
 
 	[Header("Look Settings")]
-	public float sensitivity = 100.0f;
+	public float sensitivity = 45.0f;
 	public GameObject cam;
 	public bool lockCursorOnStart = true;
 
-	private CharacterController character;
+    [Header("Flashlight Settings")]
+    public Light flashlight;
+    public float flashlightRange = 15f;
+    public float flashlightIntensity = 3f;
+
+    private CharacterController character;
 	private float verticalVelocity = 0f;
 	private float verticalRotation = 0f;
 
@@ -35,16 +40,60 @@ public class CharController_Motor : MonoBehaviour {
 		if (lockCursorOnStart) {
 			SetCursorLock(true);
 		}
-	}
+
+        if (flashlight != null)
+        {
+            flashlight.type = LightType.Spot;
+            flashlight.color = Color.white;
+            flashlight.range = flashlightRange;
+            flashlight.intensity = flashlightIntensity;
+            flashlight.spotAngle = 60f;
+            flashlight.enabled = false;
+        }
+    }
 
 	public void SetCursorLock(bool locked) {
 		Cursor.lockState = locked ? CursorLockMode.Locked : CursorLockMode.None;
 		Cursor.visible = !locked;
 	}
 
-	void Update() {
+    bool ReadFlashlightInput()
+    {
+		#if ENABLE_INPUT_SYSTEM
+				if (Keyboard.current != null &&
+					Keyboard.current.fKey.wasPressedThisFrame)
+				{
+					return true;
+				}
+		#endif
+
+				try
+				{
+					if (Input.GetKeyDown(KeyCode.F))
+						return true;
+				}
+				catch { }
+
+				return false;
+    }
+
+    void Update() {
 		HandleCursor();
-		Vector2 moveInput = ReadMoveInput();
+
+        if (ReadFlashlightInput())
+        {
+            if (flashlight != null)
+            {
+                flashlight.enabled = !flashlight.enabled;
+                Debug.Log("Flashlight is now: " + flashlight.enabled);
+            }
+            else
+            {
+                Debug.LogError("Flashlight is not assigned in the Inspector!");
+            }
+        }
+
+        Vector2 moveInput = ReadMoveInput();
 		bool isSprinting = ReadSprintInput();
 		bool jumpPressed = ReadJumpInput();
 
