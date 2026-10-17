@@ -182,8 +182,10 @@ public class MainMenuManager : MonoBehaviour
         if (isTransitioning) return;
 
         PlaySound();
-    }
 
+        if (mainMenuPanel != null)
+            mainMenuPanel.SetActive(false);
+    }
     // Legacy support for EscapeMenu / wakeupbutton.cs
     public void OnWakeUpPressed()
     {
