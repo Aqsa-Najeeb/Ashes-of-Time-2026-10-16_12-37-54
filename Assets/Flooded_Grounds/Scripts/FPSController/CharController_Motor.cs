@@ -25,7 +25,6 @@ public class CharController_Motor : MonoBehaviour {
     public float flashlightRange = 15f;
     public float flashlightIntensity = 3f;
 
-    private CharacterController character;
 	private float verticalVelocity = 0f;
 	private float verticalRotation = 0f;
 
